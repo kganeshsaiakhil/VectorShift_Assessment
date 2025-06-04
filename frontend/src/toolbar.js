@@ -1,30 +1,37 @@
 // toolbar.js
 
 import { DraggableNode } from './draggableNode';
+import { Paper, Typography, Box, Divider } from '@mui/material';
 
 export const PipelineToolbar = () => {
     return (
-        <div style={{ padding: '10px' }}>
-            <div style={{ marginBottom: '10px' }}>
-                <h3 style={{ marginBottom: '5px' }}>Basic Nodes</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+        <Paper elevation={2} sx={{ p: 2, borderRadius: 2 }}>
+            <Box mb={2}>
+                <Typography variant="h6" fontWeight="bold" mb={1} color="primary">
+                    Basic Nodes
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
                     <DraggableNode type='customInput' label='Input' />
                     <DraggableNode type='llm' label='LLM' />
                     <DraggableNode type='customOutput' label='Output' />
                     <DraggableNode type='text' label='Text' />
-                </div>
-            </div>
+                </Box>
+            </Box>
             
-            <div style={{ marginTop: '20px' }}>
-                <h3 style={{ marginBottom: '5px' }}>Advanced Nodes</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <Divider sx={{ my: 2 }} />
+            
+            <Box mt={2}>
+                <Typography variant="h6" fontWeight="bold" mb={1} color="secondary">
+                    Advanced Nodes
+                </Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
                     <DraggableNode type='filter' label='Filter' />
                     <DraggableNode type='dbQuery' label='DB Query' />
                     <DraggableNode type='imageProcessing' label='Image Processing' />
                     <DraggableNode type='dataTransform' label='Data Transform' />
                     <DraggableNode type='api' label='API Call' />
-                </div>
-            </div>
-        </div>
+                </Box>
+            </Box>
+        </Paper>
     );
 };
