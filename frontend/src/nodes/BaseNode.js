@@ -136,9 +136,11 @@ export const BaseNode = ({
                   variant="outlined"
                   size="small"
                   type={field.type || "text"} 
-                  value={state[key]} 
-                  onChange={handlers[`handle${key.charAt(0).toUpperCase() + key.slice(1)}Change`]}
+                  value={field.value !== undefined ? field.value : state[key]} 
+                  onChange={field.onChange || handlers[`handle${key.charAt(0).toUpperCase() + key.slice(1)}Change`]}
                   sx={{ mt: 1 }}
+                  multiline={field.multiline || false}
+                  minRows={field.minRows || 1}
                 />
               )}
             </Box>
