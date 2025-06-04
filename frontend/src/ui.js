@@ -7,6 +7,7 @@ import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { nodeTypes } from './nodes/nodeRegistry';
+import { Paper, Typography, Box } from '@mui/material';
 
 import 'reactflow/dist/style.css';
 
@@ -34,7 +35,8 @@ export const PipelineUI = () => {
       onNodesChange,
       onEdgesChange,
       onConnect
-    } = useStore(selector, shallow);    const { getInitNodeData } = require('./nodes/nodeRegistry');
+    } = useStore(selector, shallow);    
+    const { getInitNodeData } = require('./nodes/nodeRegistry');
 
     const onDrop = useCallback(
         (event) => {
@@ -49,7 +51,7 @@ export const PipelineUI = () => {
             if (typeof type === 'undefined' || !type) {
               return;
             }
-      
+            
             const position = reactFlowInstance.project({
               x: event.clientX - reactFlowBounds.left,
               y: event.clientY - reactFlowBounds.top,
@@ -75,27 +77,43 @@ export const PipelineUI = () => {
     }, []);
 
     return (
-        <>
-        <div ref={reactFlowWrapper} style={{width: '100wv', height: '70vh'}}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-                onInit={setReactFlowInstance}
-                nodeTypes={nodeTypes}
-                proOptions={proOptions}
-                snapGrid={[gridSize, gridSize]}
-                connectionLineType='smoothstep'
-            >
-                <Background color="#aaa" gap={gridSize} />
-                <Controls />
-                <MiniMap />
-            </ReactFlow>
-        </div>
-        </>
+        <Paper elevation={3} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+            <Box sx={{ p: 1, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider' }}>
+                <Typography variant="subtitle1" fontWeight="medium" color="text.secondary">
+                    Design Your Pipeline
+                </Typography>
+            </Box>
+            <div ref={reactFlowWrapper} style={{ width: '100%', height: '70vh' }}>
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                    onInit={setReactFlowInstance}
+                    nodeTypes={nodeTypes}
+                    proOptions={proOptions}
+                    snapGrid={[gridSize, gridSize]}
+                    connectionLineType='smoothstep'
+                    defaultEdgeOptions={{
+                        style: { strokeWidth: 2 },
+                        animated: true,
+                    }}
+                >
+                    <Background color="#aaa" gap={gridSize} size={1} />
+                    <Controls />
+                    <MiniMap
+                        nodeStrokeColor={(n) => {
+                            return n.style?.stroke || '#1976d2';
+                        }}
+                        nodeColor={(n) => {
+                            return n.data?.nodeType === 'customInput' ? '#6c00fa' : '#1976d2';
+                        }}
+                    />
+                </ReactFlow>
+            </div>
+        </Paper>
     )
 }
